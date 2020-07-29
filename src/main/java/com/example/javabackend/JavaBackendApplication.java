@@ -34,7 +34,6 @@ public class JavaBackendApplication {
             if (stadtRepository.count() < 10) {
                 log.info("Creating Dummy Data");
 
-                // createDummyStadt(stadtRepository);
                 List<Stadt> stadte = new ArrayList<>();
 
                 for (int i = 0; i < 10; i++) {
@@ -43,7 +42,6 @@ public class JavaBackendApplication {
                 stadtRepository.saveAll(stadte);
                 log.info("Created Stadt Dummy Data");
 
-                // createDummySpezies(speziesRepository);
                 List<Spezies> spezies = new ArrayList<>();
 
                 for (int i = 0; i < 250; i++) {
@@ -55,7 +53,6 @@ public class JavaBackendApplication {
 
                 for (Stadt stadt:stadtRepository.findAll()) {
 
-                    //createDummyStrasse(strasseRepository, stadt);
                     List<Strasse> strassen = new ArrayList<>();
                     int rand = (int)(Math.random() * (200 - 10)) + 10;
 
@@ -67,7 +64,6 @@ public class JavaBackendApplication {
                 }
 
                 for(Strasse strasse: strasseRepository.findAll()) {
-                    //createDummyBaum(baumRepository, geoLocationRepository, speziesRepository, strasse);
                     List<GeoLocation> geoLocations = new ArrayList<>();
                     List<Baum> baums = new ArrayList<>();
 
@@ -76,8 +72,6 @@ public class JavaBackendApplication {
                     for (int i = 0; i < rand; i++) {
                         GeoLocation geoLocation = new GeoLocation(faker.number().randomDouble(6, -100, 100), faker.number().randomDouble(6, -100, 100));
                         geoLocations.add(geoLocation);
-
-                        // terable<Spezies> spezies = speziesRepository.findAll();
 
                         baums.add(new Baum(faker.number().randomNumber(), faker.date().birthday(), strasse, spezies.get(0), geoLocation));
                     }
@@ -89,7 +83,6 @@ public class JavaBackendApplication {
                 }
 
                 for (Baum baum: baumRepository.findAll()) {
-                    //createDummyBefund(befundRepository, baum);
                     List<Befund> befunde = new ArrayList<>();
                     int rand = (int)(Math.random() * 10);
 
@@ -102,83 +95,11 @@ public class JavaBackendApplication {
                 }
 
 
-
             } else {
                 log.info("Dummy Data already existing");
             }
         };
     }
 
-    void createDummyStadt(StadtRepository stadtRepository) {
-        List<Stadt> stadte = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            stadte.add(new Stadt(faker.address().zipCode(), faker.address().cityName()));
-        }
-
-        stadtRepository.saveAll(stadte);
-
-        /*
-        log.info("Stadt found with findAll():");
-        log.info("-------------------------------");
-
-        for (Stadt stadt : stadtRepository.findAll()) {
-            log.info(stadt.toString());
-        }
-        log.info("");
-
-         */
-    }
-
-    void createDummySpezies(SpeziesRepository speziesRepository) {
-        List<Spezies> spezies = new ArrayList<>();
-
-        for (int i = 0; i < 250; i++) {
-            spezies.add(new Spezies(faker.name().fullName(), faker.name().firstName()));
-        }
-        speziesRepository.saveAll(spezies);
-    }
-
-    void createDummyStrasse(StrasseRepository strasseRepository, Stadt stadt) {
-        List<Strasse> strassen = new ArrayList<>();
-
-        int rand = (int)(Math.random() * (200 - 10)) + 10;
-
-        for (int i = 0; i < rand; i++) {
-            strassen.add(new Strasse(faker.address().streetName(), faker.address().stateAbbr(), stadt));
-        }
-        strasseRepository.saveAll(strassen);
-    }
-
-    void createDummyBaum(BaumRepository baumRepository, GeoLocationRepository geoLocationRepository, SpeziesRepository speziesRepository, Strasse strasse) {
-        List<GeoLocation> geoLocations = new ArrayList<>();
-        List<Baum> baums = new ArrayList<>();
-
-        int rand = (int)(Math.random() * 800);
-
-        for (int i = 0; i < rand; i++) {
-            GeoLocation geoLocation = new GeoLocation(faker.number().randomDouble(6, -100, 100), faker.number().randomDouble(6, -100, 100));
-            geoLocations.add(geoLocation);
-
-            Iterable<Spezies> spezies = speziesRepository.findAll();
-
-            baums.add(new Baum(faker.number().randomNumber(), faker.date().birthday(), strasse, spezies.iterator().next(), geoLocation));
-        }
-        geoLocationRepository.saveAll(geoLocations);
-        baumRepository.saveAll(baums);
-
-    }
-
-    void createDummyBefund(BefundRepository befundRepository, Baum baum) {
-        List<Befund> befunde = new ArrayList<>();
-
-        int rand = (int)(Math.random() * 10);
-
-        for (int i = 0; i < rand; i++) {
-            befunde.add(new Befund(faker.date().birthday(), faker.lorem().sentence(), baum));
-        }
-
-        befundRepository.saveAll(befunde);
-    }
 
 }

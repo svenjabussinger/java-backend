@@ -8,7 +8,5 @@ import java.util.List;
 
 public interface BefundRepository extends CrudRepository<Befund, Long> {
 
-    List<Befund> findByBaum(Baum baum);
-
     List<Befund> findByBaumId(Long baumId);
 }
